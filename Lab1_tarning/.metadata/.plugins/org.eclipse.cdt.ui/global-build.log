@@ -1,0 +1,14 @@
+14:15:31 **** Incremental Build of configuration Debug for project tarning ****
+make -j16 all 
+arm-none-eabi-size  tarning.elf 
+   text	   data	    bss	    dec	    hex	filename
+   8544	     12	   1644	  10200	   27d8	tarning.elf
+Finished building: default.size.stdout
+ 
+14:15:40 **** Incremental Build of configuration Debug for project tarning ****
+make -j16 all 
+arm-none-eabi-size  tarning.elf 
+   text	   data	    bss	    dec	    hex	filename
+   8544	     12	   1644	  10200	   27d8	tarning.elf
+Finished building: default.size.stdout
+ 

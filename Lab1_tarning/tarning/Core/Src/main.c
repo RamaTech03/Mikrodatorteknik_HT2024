@@ -15,6 +15,7 @@
   *
   ******************************************************************************
   */
+
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -51,11 +52,104 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+int is_blue_button_pressed();
+void put_on_sseg(uint8_t dec_nbr);
+void put_die_dots(uint8_t die_nbr);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+const uint8_t sseg[10] = {0xC0, 0xCF, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+const uint8_t sseg_err = 0x23;
+
+
+/* Function to display a digit on the 7-segment display */
+void put_on_sseg(uint8_t dec_nbr) {
+    if (dec_nbr <= 9) {
+        // Write the correct value to the lower 8 bits of GPIOC->ODR
+        GPIOC->ODR = (GPIOC->ODR & ~0xFF) | sseg[dec_nbr];
+    } else {
+        // Error pattern
+        GPIOC->ODR = (GPIOC->ODR & ~0xFF) | sseg_err;
+    }
+}
+
+// returns 1 if blue button is pressed
+// returns 0 if blue button isn't pressed
+int is_blue_button_pressed()
+{
+    // Kontrollera status för pinne 13 på GPIOC (PC13)
+    if (GPIOC->IDR & (1 << 13))
+    {
+        return 0; // Knappen är nedtryckt (bit är satt)
+    }
+    else
+    {
+        return 1; // Knappen är inte nedtryckt (bit är ej satt)
+    }
+}
+
+void put_die_dots(uint8_t die_nbr) {
+    // Stäng av alla dioder först
+    HAL_GPIO_WritePin(DI_A_GPIO_Port, DI_A_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(DI_B_GPIO_Port, DI_B_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(DI_C_GPIO_Port, DI_C_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(DI_D_GPIO_Port, DI_D_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(DI_E_GPIO_Port, DI_E_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(DI_F_GPIO_Port, DI_F_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(DI_G_GPIO_Port, DI_G_Pin, GPIO_PIN_RESET);
+
+    // Tänd rätt dioder beroende på tärningsvärdet
+    switch (die_nbr) {
+        case 1:
+            HAL_GPIO_WritePin(DI_D_GPIO_Port, DI_D_Pin, GPIO_PIN_SET); //
+            break;
+        case 2:
+            HAL_GPIO_WritePin(DI_A_GPIO_Port, DI_A_Pin, GPIO_PIN_SET);  //
+            HAL_GPIO_WritePin(DI_G_GPIO_Port, DI_G_Pin, GPIO_PIN_SET); //
+            break;
+        case 3:
+            HAL_GPIO_WritePin(DI_A_GPIO_Port, DI_A_Pin, GPIO_PIN_SET);  //
+            HAL_GPIO_WritePin(DI_D_GPIO_Port, DI_D_Pin, GPIO_PIN_SET); //
+            HAL_GPIO_WritePin(DI_G_GPIO_Port, DI_G_Pin, GPIO_PIN_SET); //
+            break;
+        case 4:
+            HAL_GPIO_WritePin(DI_A_GPIO_Port, DI_A_Pin, GPIO_PIN_SET);  //
+            HAL_GPIO_WritePin(DI_B_GPIO_Port, DI_B_Pin, GPIO_PIN_SET);  //
+            HAL_GPIO_WritePin(DI_E_GPIO_Port, DI_E_Pin, GPIO_PIN_SET); //
+            HAL_GPIO_WritePin(DI_G_GPIO_Port, DI_G_Pin, GPIO_PIN_SET); //
+            break;
+        case 5:
+            HAL_GPIO_WritePin(DI_A_GPIO_Port, DI_A_Pin, GPIO_PIN_SET);  //
+            HAL_GPIO_WritePin(DI_B_GPIO_Port,DI_B_Pin, GPIO_PIN_SET);  //
+            HAL_GPIO_WritePin(DI_D_GPIO_Port, DI_D_Pin, GPIO_PIN_SET); //
+            HAL_GPIO_WritePin(DI_E_GPIO_Port, DI_E_Pin, GPIO_PIN_SET); //
+            HAL_GPIO_WritePin(DI_G_GPIO_Port, DI_G_Pin, GPIO_PIN_SET); //
+            break;
+        case 6:
+            HAL_GPIO_WritePin(DI_A_GPIO_Port, DI_A_Pin, GPIO_PIN_SET);  //
+            HAL_GPIO_WritePin(DI_B_GPIO_Port,DI_B_Pin, GPIO_PIN_SET);  //
+            HAL_GPIO_WritePin(DI_C_GPIO_Port, DI_C_Pin, GPIO_PIN_SET); //
+            HAL_GPIO_WritePin(DI_F_GPIO_Port, DI_F_Pin, GPIO_PIN_SET); //
+            HAL_GPIO_WritePin(DI_E_GPIO_Port, DI_E_Pin, GPIO_PIN_SET); //
+            HAL_GPIO_WritePin(DI_G_GPIO_Port, DI_G_Pin, GPIO_PIN_SET); //
+            break;
+        default:
+            // Om ogiltigt värde, tänd alla dioder
+            HAL_GPIO_WritePin(DI_A_GPIO_Port, DI_A_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(DI_B_GPIO_Port,DI_B_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(DI_C_GPIO_Port, DI_C_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(DI_D_GPIO_Port, DI_D_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(DI_E_GPIO_Port, DI_E_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(DI_F_GPIO_Port, DI_F_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(DI_G_GPIO_Port, DI_G_Pin, GPIO_PIN_SET);
+            break;
+    }
+}
+
+
+
 
 /* USER CODE END 0 */
 
@@ -67,6 +161,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+
 
   /* USER CODE END 1 */
 
@@ -89,20 +184,51 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  /* USER CODE BEGIN 2 */
 
+  /* USER CODE BEGIN 2 */
+  for (uint8_t i = 0; i <= 9; i++) {
+          put_on_sseg(i);
+          HAL_Delay(333);  // 333 ms delay mellan varje siffra
+      }
+      put_on_sseg(88);  // Felmönster ska visas
   /* USER CODE END 2 */
 
   /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+  /* USER DE BEGIN WHILE */
+
+  uint8_t die_value = 1; // Startvärde för tärningen
+   int pressed = 0;
+
+   while (1)
+   {
+       pressed = is_blue_button_pressed();
+       if (pressed)
+       {
+           // Öka tärningsvärdet när knappen är nedtryckt
+           die_value++;
+           if (die_value > 6) {
+              die_value = 1; // Återställ till 1 om värdet blir mer än 6
+           }
+
+           // Sätt dioderna för att visa tärningsvärdet
+           put_die_dots(die_value);
+           put_on_sseg(die_value);
+          // put_on_sseg(die_value);
+
+           HAL_Delay(100);
+
+       }
+
+
+   }
+ }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+
   /* USER CODE END 3 */
-}
+
 
 /**
   * @brief System Clock Configuration
@@ -201,7 +327,15 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
+                          |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5|DI_A_Pin|DI_B_Pin|DI_C_Pin
+                          |DI_D_Pin|DI_E_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, DI_F_Pin|DI_G_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -209,12 +343,30 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
+  /*Configure GPIO pins : PC0 PC1 PC2 PC3
+                           PC4 PC5 PC6 PC7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
+                          |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PA5 DI_A_Pin DI_B_Pin DI_C_Pin
+                           DI_D_Pin DI_E_Pin */
+  GPIO_InitStruct.Pin = GPIO_PIN_5|DI_A_Pin|DI_B_Pin|DI_C_Pin
+                          |DI_D_Pin|DI_E_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : DI_F_Pin DI_G_Pin */
+  GPIO_InitStruct.Pin = DI_F_Pin|DI_G_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
