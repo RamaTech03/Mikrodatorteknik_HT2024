@@ -28,6 +28,7 @@
 /* USER CODE BEGIN PTD */
 
 
+void my_systick_handler(void);
 
 
 enum state {
@@ -87,6 +88,10 @@ static void MX_TIM3_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int systick_count = 0;
+uint32_t ticks_left_in_state = 0;  // Declare this globally
+
+
 
 void evq_push_back(enum event e)
 {
@@ -121,6 +126,38 @@ void evq_init(void) {
     evq_front_ix = 0;         // Start of the queue
     evq_rear_ix = 0;          // End of the queue
 }
+
+void my_systick_handler(void)
+{
+    systick_count++;
+
+    // Decrease ticks_left_in_state and check if it reaches 0
+    if (ticks_left_in_state > 0) {
+        ticks_left_in_state--;
+    }
+    if (systick_count == 1000)
+        {
+            HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+            systick_count = 0;
+        }
+
+        // Push timeout event if ticks_left_in_state reaches 0
+        if (ticks_left_in_state == 0) {
+            evq_push_back(ev_state_timeout);
+        }
+    }
+
+
+void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin )
+{
+	if (GPIO_Pin == GPIO_PIN_13)
+	{
+        evq_push_back(ev_button_push);
+
+	}
+
+}
+
 
 
 int is_button_pressed()
@@ -221,77 +258,47 @@ void set_traffic_lights(enum state s) {
   * @brief  The application entry point.
   * @retval int
   */
-int main(void) {
+int main(void)
+{
 
-	/* USER CODE BEGIN 1 */
+  /* USER CODE BEGIN 1 */
 
-		/* USER CODE END 1 */
+  /* USER CODE END 1 */
 
-		/* MCU Configuration--------------------------------------------------------*/
+  /* MCU Configuration--------------------------------------------------------*/
 
-		/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-		HAL_Init();
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
 
-		/* USER CODE BEGIN Init */
+  /* USER CODE BEGIN Init */
 
-		/* USER CODE END Init */
+  /* USER CODE END Init */
 
-		/* Configure the system clock */
-		SystemClock_Config();
+  /* Configure the system clock */
+  SystemClock_Config();
 
-		/* USER CODE BEGIN SysInit */
+  /* USER CODE BEGIN SysInit */
 
-		/* USER CODE END SysInit */
+  /* USER CODE END SysInit */
 
-		/* Initialize all configured peripherals */
-		MX_GPIO_Init();
-		MX_USART2_UART_Init();
-		MX_TIM3_Init();
-		/* USER CODE BEGIN 2 */
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_USART2_UART_Init();
+  MX_TIM3_Init();
+  /* USER CODE BEGIN 2 */
 		push_button_light_off();  // Ensure the LED is off initially
 
 		evq_init();
 		enum state st = s_init;    // Initiera state
 		enum event ev = ev_none;  // Initiera event
-		int curr_press = is_button_pressed();  // Initialize curr_press
-		int last_press = curr_press; // För att hålla reda på föregående tillstånd
-		uint32_t ticks_left_in_state = 0; // Tiden kvar i tillståndet
-		uint32_t last_tick = HAL_GetTick();  // Starttick
-		uint32_t curr_tick;
-		/* USER CODE END 2 */
 
-		/* Infinite loop */
-		/* USER CODE BEGIN WHILE */
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
 
 		while (1) {
 			ev = evq_pop_front(); // Default event
-
-			curr_tick = HAL_GetTick();
-			if (curr_tick != last_tick) {
-				// Ett nytt tick har gått
-				ticks_left_in_state--;
-				last_tick = curr_tick;  // Uppdatera senaste tick
-
-				// Om tiden är slut i detta tillstånd
-				if (ticks_left_in_state == 0) {
-					ev = ev_state_timeout;  // Generera timeout-event
-				}
-			}
-
-			if (curr_press && !last_press) { // Positiv flank: knappen var ej tryckt men nu tryckt
-				ev = ev_button_push;        // Generera knapptryckningsevent
-			} else {
-				ev = ev_none;         // Inget event om ingen flank upptäcks
-			}
-			last_press = curr_press;
-
-			if (curr_press && !last_press) {
-				ev = ev_button_push; // Button pressed event
-				push_button_light_on(); // Turn on the button LED when the button is pressed
-			} else if (!curr_press && last_press) {
-				push_button_light_off(); // Turn off the button LED when the button is released
-			}
-			last_press = curr_press;
 
 			switch (st) {
 			case s_init:
@@ -313,6 +320,7 @@ int main(void) {
 			case s_car_go:
 				set_traffic_lights(s_car_go);
 				if (ev == ev_button_push) {
+			        push_button_light_on();
 					st = s_pushed_wait;  // Om knappen trycks, vänta
 					ticks_left_in_state = 2000;  // Väntetid på 2000 ms
 				}
@@ -336,6 +344,7 @@ int main(void) {
 
 			case s_ped_go:
 				set_traffic_lights(s_ped_go);
+		        push_button_light_on();
 				if (ev == ev_state_timeout) {
 					st = s_ped_warning;  // Fotgängarvarning
 					ticks_left_in_state = 2000;  // 2000 ms för varning
@@ -364,11 +373,11 @@ int main(void) {
 			}
 
 		}
-		/* USER CODE END WHILE */
+    /* USER CODE END WHILE */
 
-		/* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
 
-	/* USER CODE END 3 */
+  /* USER CODE END 3 */
 }
 
 /**
@@ -554,6 +563,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
