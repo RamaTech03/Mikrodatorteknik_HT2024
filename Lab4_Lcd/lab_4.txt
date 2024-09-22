@@ -1,0 +1,20 @@
+lab_4
+
+Vilka andra portar kan dessa signaler
+använda? PB8 och PB9
+
+Om räknaren är 16-bitars, hur många
+millisekunder kan du som mest ha en
+fördröjning? 65.535 millisekunder.
+
+Om räknaren är 32-bitars, hur många
+minuter kan du som mest ha en
+fördröjning?cirka 71,58 minuter
+
+
+
+Du kommer att behöva ha en timer vars räknare är 32
+bitar. Vilka timers kan du använda? TIM2,TIM5
+
+
+41999

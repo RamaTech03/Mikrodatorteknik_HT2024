@@ -4,10 +4,10 @@ Lab1_Tarning
 2. den ligger i bussen som heter APB1
 3. Det börjar med 0x4002 0800
 4. Det slutar med 0x4002 0BFF
-5. IDR står för Input data register
-6. ODR står för output data register
-7. Varje GPIO-ben har två bitar i MODER-register, 
-det finns fyra olika konfigurationer 2^2. 
+5. IDR står för Input data register (t)
+6. ODR står för output data register(t)
+7. Varje GPIO-ben har två bitar i MODER-register, (t)
+det finns fyra olika konfigurationer 2^2.
 ingångsläge(00), utgångsläge(01), Alternativ function(10) 
 och Analogt läge(11)
 8.  Ingångsläge(input mode) är vanligast standardläget för GPIO-benen vid uppstart.
@@ -22,5 +22,5 @@ Ingångsläge anges som default om inget annat anges eller konfigureras.
 2. Flash-minnet
 3. Aktivt låg
 4. IDR och ODR ändrades, gul bakgrund, MODER på GPIOA
-5. Program Counter (PC) är den enhet som uppdateras. Program Counter är ansvarig för att hålla reda på den aktuella exekveringsadressen i koden och kommer att förändras varje gång du kör programmet eller när du pausar det vid olika kodavsnitt
-6.Program Counter (PC) uppdateras mellan varje paus och körning eftersom det är det register som håller reda på var i minnet processorn är i sitt programflöde.
+5. Systick 
+6. för att systick räknar fortfarande ändå om vi har pausat kod körningen.
