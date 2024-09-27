@@ -21,7 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <lcd.h>
+#include <stdio.h>  // För sprintf()
+#include <stdint.h> // För uint16_t
+#include <math.h>   // matematik  behövs
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,7 +34,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define ADC_BUF_SIZE 3  // Definiera storleken på ADC-bufferten
+#define JOY_X_IX 1    // Index för joystickens X-värde
+#define JOY_Y_IX 2     // Index för joystickens Y-värde
+#define PHOTORESISTOR_IX 0  // Index för fotoresistorn
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -40,23 +46,68 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc1;
+
+I2C_HandleTypeDef hi2c1;
+
+TIM_HandleTypeDef htim2;
+
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+uint16_t adc_buffer[ADC_BUF_SIZE];  // Buffert för att lagra konverterade ADC-värden
+int adc_buf_ix = 0;                  // Index för att hålla reda på nästa plats i bufferten
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_ADC1_Init(void);
+static void MX_TIM2_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
+uint16_t read_one_adc_value(ADC_HandleTypeDef * hadc);
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc);
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+uint16_t read_one_adc_value(ADC_HandleTypeDef * hadc)
+{
+	HAL_ADC_Start(hadc);
+	HAL_ADC_PollForConversion(hadc, 100);
+	uint32_t reading = HAL_ADC_GetValue(hadc);
+	HAL_ADC_Stop(hadc);
+	return (uint16_t) reading;
+}
 
+
+
+float normalize_12bit(uint16_t x) {
+    return x / 4095.0f;  // Dela med 4095 för att få ett värde i spannet [0, 1]
+}
+
+float normalize_12bit_posneg(uint16_t x) {
+    return (x / 2047.5f) - 1.0f;  // Omvandla 0-4095 till -1.0 till 1.0
+}
+
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+    if (hadc->Instance == ADC1)
+    {
+        uint16_t adcValue = HAL_ADC_GetValue(hadc); // Hämta det konverterade värdet
+        adc_buffer[adc_buf_ix++] = adcValue; // Spara värdet i bufferten
+
+        // Återställ index om det når buffertens storlek
+        if (adc_buf_ix >= ADC_BUF_SIZE)
+        {
+            adc_buf_ix = 0;
+        }
+    }
+}
 /* USER CODE END 0 */
 
 /**
@@ -89,7 +140,13 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_ADC1_Init();
+  MX_TIM2_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+  TextLCDType hlcd;
+  TextLCD_Init(&hlcd, &hi2c1, 0x27 << 1);
+  HAL_ADC_Start_IT(&hadc1);
 
   /* USER CODE END 2 */
 
@@ -97,10 +154,42 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	  uint16_t joystickXValue = adc_buffer[JOY_X_IX];
+	  uint16_t joystickYValue = adc_buffer[JOY_Y_IX];
+	  uint16_t photoresistorValue = adc_buffer[PHOTORESISTOR_IX];
+
+
+      char buffer[20];
+
+      // Skriv joystick X-värde
+      float normalizedX = normalize_12bit_posneg(joystickXValue);
+      sprintf(buffer, "%.2fX  ", normalizedX);
+      TextLCD_Position(&hlcd, 0, 0);
+      TextLCD_PutStr(&hlcd, buffer);
+
+      float normalizedY = normalize_12bit_posneg(joystickYValue);
+	  sprintf(buffer, "%.3fY  ", normalizedY);
+	  TextLCD_Position(&hlcd, 0, 1);
+	  TextLCD_PutStr(&hlcd, buffer);
+
+
+
+      // Skriv fotoresistorvärde normaliserat mellan [0, 1]
+      float normalizedPhotoresistor = normalize_12bit(photoresistorValue);
+      sprintf(buffer, "%.3fL", normalizedPhotoresistor);
+      TextLCD_Position(&hlcd, 10, 1);
+      TextLCD_PutStr(&hlcd, buffer);
+
+
+  }
+
+
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
   /* USER CODE END 3 */
 }
 
@@ -148,6 +237,155 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief ADC1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC1_Init(void)
+{
+
+  /* USER CODE BEGIN ADC1_Init 0 */
+
+  /* USER CODE END ADC1_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC1_Init 1 */
+
+  /* USER CODE END ADC1_Init 1 */
+
+  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
+  */
+  hadc1.Instance = ADC1;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc1.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc1.Init.ScanConvMode = ENABLE;
+  hadc1.Init.ContinuousConvMode = ENABLE;
+  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc1.Init.NbrOfConversion = 3;
+  hadc1.Init.DMAContinuousRequests = DISABLE;
+  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  if (HAL_ADC_Init(&hadc1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
+  */
+  sConfig.Channel = ADC_CHANNEL_0;
+  sConfig.Rank = 1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
+  */
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = 2;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
+  */
+  sConfig.Channel = ADC_CHANNEL_10;
+  sConfig.Rank = 3;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC1_Init 2 */
+
+  /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 83;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 4294967295;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+
 }
 
 /**

@@ -1,0 +1,201 @@
+14:16:25 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  32476	    472	   2224	  35172	   8964	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 
+14:16:31 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-size  Lab5_ADC.elf 
+   text	   data	    bss	    dec	    hex	filename
+  32476	    472	   2224	  35172	   8964	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+14:16:52 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-size  Lab5_ADC.elf 
+   text	   data	    bss	    dec	    hex	filename
+  32476	    472	   2224	  35172	   8964	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+14:17:26 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  32404	    472	   2224	  35100	   891c	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 
+14:21:04 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:175:50: error: 'joystickXValue' undeclared (first use in this function)
+  175 |       float normalizedX = normalize_12bit_posneg(joystickXValue);
+      |                                                  ^~~~~~~~~~~~~~
+../Core/Src/main.c:175:50: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:184:55: error: 'photoresistorValue' undeclared (first use in this function)
+  184 |       float normalizedPhotoresistor = normalize_12bit(photoresistorValue);
+      |                                                       ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:201:1: error: expected identifier or '(' before '}' token
+  201 | }
+      | ^
+make: *** [Core/Src/subdir.mk:37: Core/Src/main.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+14:21:48 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:169:11: error: 'joystickXValue' undeclared (first use in this function)
+  169 |           joystickXValue = adc_buffer[JOY_X_IX];
+      |           ^~~~~~~~~~~~~~
+../Core/Src/main.c:169:11: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:170:11: error: 'joystickYValue' undeclared (first use in this function)
+  170 |           joystickYValue = adc_buffer[JOY_Y_IX];
+      |           ^~~~~~~~~~~~~~
+../Core/Src/main.c:171:11: error: 'photoresistorValue' undeclared (first use in this function)
+  171 |           photoresistorValue = adc_buffer[PHOTORESISTOR_IX];
+      |           ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:203:1: error: expected identifier or '(' before '}' token
+  203 | }
+      | ^
+make: *** [Core/Src/subdir.mk:37: Core/Src/main.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+14:22:39 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:170:20: warning: unused variable 'joystickYValue' [-Wunused-variable]
+  170 |           uint16_t joystickYValue = adc_buffer[JOY_Y_IX];
+      |                    ^~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:203:1: error: expected identifier or '(' before '}' token
+  203 | }
+      | ^
+make: *** [Core/Src/subdir.mk:37: Core/Src/main.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+14:23:19 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:170:20: warning: unused variable 'joystickYValue' [-Wunused-variable]
+  170 |           uint16_t joystickYValue = adc_buffer[JOY_Y_IX];
+      |                    ^~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  31588	    472	   2224	  34284	   85ec	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 
+14:25:37 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  31660	    472	   2224	  34356	   8634	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 
+14:27:37 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  31660	    472	   2224	  34356	   8634	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 
+14:31:16 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  31660	    472	   2224	  34356	   8634	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 
+14:32:36 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  31660	    472	   2224	  34356	   8634	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 
+14:38:03 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-size  Lab5_ADC.elf 
+   text	   data	    bss	    dec	    hex	filename
+  31660	    472	   2224	  34356	   8634	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+14:42:32 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  31660	    472	   2224	  34356	   8634	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 
+15:01:15 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  31660	    472	   2224	  34356	   8634	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 

@@ -1,1 +1,31 @@
 lab_5
+
+Hur många procent har kondensatorn
+laddats efter 𝟑 ∗ 𝝉? 95%
+Efter 𝟓 ∗ 𝝉?  99.33%
+
+Vad är sample-and-holdkondensatorns storlek? Värsta fallet
+är högsta värdet, så använd detta. 7pF
+
+Vilken resistans ger switchen? 6kΩ
+
+Givet enbart dessa, vad blir 𝟓 ∗ 𝝉?  𝜏 = 𝑅C , τ= 42ns , 5 * 42ns = 210 ns
+
+Hur lång är en av ADC:ns klockcykler?
+Dvs. 𝑻𝑨𝑫𝑪 = 𝟏 𝒇𝑨𝑫𝑪
+(enheten är sekunder per klockcykel) 𝑻𝑨𝑫𝑪 :47.62ns
+
+Hur många klockcykler krävs för att
+hinna med 𝟓 ∗ 𝝉? Det krävs cirka 4.41 ADC-klockcykler för att hinna med 5×𝜏
+
+Vilket är det minsta
+samplingalternativ i CubeMX som
+krävs för detta? 7.5 klockcykler
+
+Antag att 𝑪𝒔 = 𝟎. Vad blir 𝟓 ∗ 𝝉 när 𝑹𝒔
+ges av en termistor som den som
+nämns ovan? 𝝉= 140 ns  5* 140ns = 700ns 
+
+Vad blir 𝒏𝑺𝑨𝑴𝑷 och vilket värde på
+samplingstid måste du välja i CubeMX
+för att garantera en god avläsning? nSAMP = cirka 15 klockcykler. Samplingsalternativet i CubeMX 19.5 klockcykler.

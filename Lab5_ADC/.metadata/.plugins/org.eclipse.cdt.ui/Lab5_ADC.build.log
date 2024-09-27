@@ -1,0 +1,17 @@
+15:01:15 **** Incremental Build of configuration Debug for project Lab5_ADC ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Lab5_ADC.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ramam\OneDrive - Jonkoping University\T5\Mikrodatorteknik\github\Mikrodatorteknik_HT2024\Lab5_ADC\Lab5_ADC\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab5_ADC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Lab5_ADC.elf
+ 
+arm-none-eabi-size  Lab5_ADC.elf 
+arm-none-eabi-objdump -h -S Lab5_ADC.elf  > "Lab5_ADC.list"
+   text	   data	    bss	    dec	    hex	filename
+  31660	    472	   2224	  34356	   8634	Lab5_ADC.elf
+Finished building: default.size.stdout
+ 
+Finished building: Lab5_ADC.list
+ 
+
+15:01:18 Build Finished. 0 errors, 0 warnings. (took 3s.163ms)
+
