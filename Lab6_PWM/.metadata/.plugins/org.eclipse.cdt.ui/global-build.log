@@ -1,0 +1,14 @@
+14:01:20 **** Build of configuration Debug for project Lab6_PWM ****
+make -j16 all 
+arm-none-eabi-size  Lab6_PWM.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18396	     16	   1720	  20132	   4ea4	Lab6_PWM.elf
+Finished building: default.size.stdout
+ 
+14:01:25 **** Incremental Build of configuration Debug for project Lab6_PWM ****
+make -j16 all 
+arm-none-eabi-size  Lab6_PWM.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18396	     16	   1720	  20132	   4ea4	Lab6_PWM.elf
+Finished building: default.size.stdout
+ 

@@ -1,0 +1,35 @@
+Lab_6
+
+Vilka frekvenser brukar en LEDdimmer arbeta på?
+500 Hz och 30 kHz 
+
+
+
+Skriv en kort beskrivning (2-4
+meningar) av hur PWM-generering
+fungerar. Dessa måste nämnas i din
+beskrivning: ARR, CNT, CCR11,TIMx_CH12? 
+
+PWM-generering (Pulse Width Modulation) styrs av en timer, till exempel TIMx_CH1, där frekvensen bestäms av auto-reload-registret (ARR) och räkningen hanteras av counter-registret (CNT). När CNT når värdet i capture/compare-registret (CCR1), ändras PWM-signalens nivå, vilket skapar en puls med varierande bredd
+
+Vilka värden valde du för TIM1?
+fTIM1 = 84000000
+ p = 100
+ n = 21-1
+
+Dessa register styr duty cycle (pulslängd) för PWM-signalen, vilket direkt påverkar ljusintensiteten för varje kanal, även om det är pausat
+
+kan justera CCR-värdet för den kanalen för att öka pulslängden och därmed dess ljusstyrka. Dess value 
+
+Är de tre färgerna av samma
+ljusintensitet för samma värde på
+CCRx? Nej, den görna va starkast och sedan kommer blå o sedan kommer röd sist 
+
+Om någon färg behöver högre duty
+cycle för att nå samma intensitet som
+den starkaste, vad är (grovt gissat)
+proportionerna?
+
+Blå LED: Ca 70–80% duty cycle för samma upplevda ljusstyrka som grön.
+Grön LED:  mest effektiv och kräver minst duty cycle. Anta cirka 50–60% duty cycle.
+Röd LED: Röda är svagare än gröna och blå och gissar cirka 80–90% duty cycle för samma intensitet som grönt ljus

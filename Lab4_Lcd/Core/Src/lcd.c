@@ -17,9 +17,6 @@
 	    // 2. Nollställ räknaren
 	    TIM2->CNT = 0;
 
-	    // 3. Prescalern för mikrosekundfördröjning
-	    TIM2->PSC = (SystemCoreClock / 1000000) - 1;  // Dividera systemklockan till 1 MHz
-
 	    // 4. Starta timern
 	    TIM2->CR1 |= (1 << 0);  // Starta timern genom att sätta CEN-biten till 1
 
